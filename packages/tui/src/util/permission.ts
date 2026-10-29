@@ -136,10 +136,17 @@ export function permissionPresentation(
     }
   }
 
+  // MCP tools carry their call arguments in metadata.input; show them so the user can see what they approve.
+  const args = Object.keys(input).length ? input : dict(metadata.input)
   return {
     icon: "⚙",
     title: `Call tool ${source.action}`,
-    lines: [`Tool: ${source.action}`],
+    lines: [
+      `Tool: ${source.action}`,
+      ...Object.entries(args).map(
+        ([key, value]) => `${key}: ${typeof value === "string" ? value : JSON.stringify(value)}`,
+      ),
+    ],
   }
 }
 
